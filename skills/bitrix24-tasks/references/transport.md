@@ -1,0 +1,176 @@
+# Контракт транспорта b24cli
+
+## Проверенная сборка и установка
+
+Проверено 12.10.2026 на macOS arm64: `b24cli
+dev-a361a1fecddef0f6b77eb40b26d14c9b67d4cb86` из
+[dev-ветки, GitHub Actions run 38169692267](https://github.com/mesilov/bitrix24-cli/actions/runs/38169692267).
+В этой сборке 30 команд `task:*`. Бинарь включает PHP runtime; PHP, Composer
+и Docker для его запуска не нужны.
+
+Для скачивания артефактов необходим вход в GitHub. Используй отдельный каталог
+и скачай архивы вместе с `SHA256SUMS` из одного run:
+
+```sh
+gh run download 38169692267 --repo mesilov/bitrix24-cli \
+  --name b24cli-release-assets --dir ./b24cli-download
+```
+
+В artifact находятся `b24cli-linux-amd64.tar.gz`,
+`b24cli-macos-arm64.tar.gz`, `b24cli-windows-amd64.zip`, `SHA256SUMS`.
+Проверь SHA-256 нужного архива перед распаковкой. Архив содержит executable,
+`build-info.json`, runtime metadata и license notices; сохраняй их при
+установке. Windows executable называется `b24cli.exe`.
+
+Артефакты CI имеют срок хранения. При недоступности этого run выбери успешную
+сборку с артефактами в [workflow Package standalone binaries](https://github.com/mesilov/bitrix24-cli/actions/workflows/package-static.yml?query=branch%3Adev),
+затем сверь `build-info.json`, `--version`, `list task --raw` и справку команд.
+Подробности установки и поддержки платформ:
+[README транспорта](https://github.com/mesilov/bitrix24-cli#установка).
+
+## Учётные данные
+
+Проверенная сборка читает полный HTTPS webhook из `BITRIX24_WEBHOOK`;
+поддержан alias `BITRIX24_PHP_SDK_PLAYGROUND_WEBHOOK`.
+Переменная процесса имеет приоритет над выбранным dotenv.
+`B24CLI_ENV_FILE` выбирает файл с credentials. Без неё fallback относится
+к корню исходников CLI (`.env.local`, затем `.env`), поэтому standalone-бинарю
+нужно явно указать абсолютный путь к файлу пользователя.
+
+```sh
+B24CLI_ENV_FILE="/absolute/path/to/.env.local" \
+  b24cli task:list --max-scan 100 --limit 10 --json
+```
+
+В PowerShell:
+
+```powershell
+$env:B24CLI_ENV_FILE = 'C:\Private Config\.env.local'
+b24cli.exe task:list --max-scan 100 --limit 10 --json
+```
+
+Файл содержит `BITRIX24_WEBHOOK=…`, без shell-команд. Его разбирает CLI;
+выполнять `source .env.local` не требуется. Не выводи файл или переменную с
+webhook и не вставляй webhook в аргументы команды. `--config` предназначен
+для несекретного JSON с ключами `timeout`, `apiPolicy`, `profile`.
+
+В проверенном бинаре `--profile` поддерживает только `default`;
+`--env-file`, `--config-dir` и `connection:*` отсутствуют. Более свежие
+исходники dev уже могут содержать их: применяй только после проверки справки
+установленной версии. Скилл не выбирает профиль или портал по собственным
+defaults.
+
+Задачные маршруты требуют прав пользователя webhook и соответствующих scopes:
+`tasks`, `task`, для IM-чата — `im`. Обогащение участников использует
+`user.get`: для имён нужен `user_brief`, для email — `user_basic` или `user`.
+Наличие команды в бинаре не подтверждает доступ к ней на конкретном портале.
+
+## Глобальные опции
+
+| Опция | Контракт |
+| --- | --- |
+| `--json` | Один JSON envelope в stdout; диагностика в stderr. |
+| `--plain` | TSV без заголовков; специальные символы экранируются. Взаимоисключается с `--json`. |
+| `--timeout SECONDS` | HTTP timeout, по умолчанию 30 секунд, максимум 300. |
+| `--api-policy task-v3` | Значение по умолчанию: REST 3.0 и явно разрешённые companion routes REST 1.0. |
+| `--api-policy strict-rest3` | Отклоняет планы с REST 1.0/IM до первого API-запроса. |
+| `--config PATH` | Runtime JSON; `-` читает stdin. Credentials сюда не входят. |
+| `--profile default` | Единственный профиль проверенной сборки; можно опустить. |
+| `-n`, `--no-interaction` | Отключает интерактивные вопросы. |
+
+Глобальные опции допустимы до и после имени команды.
+`--` завершает разбор опций. `-q` скрывает полезный результат;
+`--silent` скрывает также диагностику — не используй их для проверки результата.
+
+## Текст, JSON и изменения
+
+`--description-file`, `--text-file`, `--fields-file`, `--where-file`,
+`--params-file` читают файл либо stdin (`-`). Используй файл для сложного
+текста и JSON, чтобы кавычки, переводы строк и shell-подстановки не меняли ввод.
+Один stdin нельзя одновременно использовать для нескольких источников.
+
+`task:add` требует `title`, `creatorId`, `responsibleId`. Basic flags
+`--title`, `--creator`, `--responsible` и другие нельзя смешивать с advanced
+режимом `--fields`/`--fields-file`. Advanced JSON использует имена REST 3.0,
+например `creatorId`, и проверяется по editable metadata. При создании
+`allowsTimeTracking` по умолчанию `false`.
+
+`task:update` отправляет только явно заданные поля; `--description=""`
+очищает описание. Lifecycle/status, participants, tags, userFields и object
+relations в таком патче не поддержаны. Для участников есть отдельная команда.
+Сроки передаются в ISO8601 с часовым поясом.
+
+`--dry-run` доступен у всех команд записи/удаления. Он возвращает
+`data.plan.steps` без записей, но может выполнять metadata/binding reads.
+Проверочные запросы видны в `meta.apiCalls`.
+
+```sh
+b24cli task:update 123 --title "Новое название" --dry-run --json
+b24cli task:add --title "Пример задачи" --creator 1 --responsible 2 --dry-run --json
+```
+
+Удаление в automation требует `--force`; на TTY CLI запрашивает подтверждение.
+Этот флаг не отключает проверку привязки сообщения, записи времени или пункта
+к задаче. Удаление пункта чек-листа затрагивает его subtree; план показывает IDs.
+
+## Результат и exit code
+
+JSON имеет структуру `{"data":…, "meta":…, "error":…}`,
+`meta.schemaVersion=1`.
+
+| Данные | Расположение |
+| --- | --- |
+| Списки | `data.items` |
+| Карточка | `data.task` |
+| Поля метаданных | `data.items` |
+| Права | `data.access` |
+| Контекст времени | `data.time` |
+| Одна мутация | `data.operation` |
+| Несколько шагов | `data.items`, подтверждённые/частичные результаты |
+| Dry-run | `data.plan.steps` |
+
+Успешный полный ответ имеет `error=null`. Ошибки могут возвращать `data=null`;
+неполный результат может содержать полезные данные и `error.code=partial-result`.
+`meta.apiCalls` показывает методы, версии и эффекты запросов, без webhook.
+Не считай всю мутацию выполненной только по наличию одного ACK.
+
+| Exit code | Значение |
+| --- | --- |
+| `0` | Подтверждённый результат в заявленном scope. |
+| `1` | Ошибка API, подключения, прав или транспорта. |
+| `2` | Ошибка аргументов или локального ввода. |
+| `3` | Неполная выборка или частично выполненные шаги. |
+| `4` | Запрет API policy или недоказанная привязка ресурса. |
+| `130` | Прерывание или отказ подтверждения. |
+
+Сохраняй exit code отдельно от JSON, включая ответы с полезными данными при
+exit `3`. При `meta.outcomeUnknown=true` ответ на запись потерян; транспорт
+не повторяет её автоматически. Не переключай REST-версию в ответ на ошибку API.
+
+## Полнота и пагинация
+
+- `task:list`/`task:find`: только `--id` задаёт серверный ID-фильтр;
+  остальные фильтры и поиск title применяются локально при обходе.
+  `--limit` режет вывод; `--all` снимает только этот лимит.
+  `--max-scan` ограничивает обход, по умолчанию 10000.
+  Проверяй `complete`, `scanned`, `matched`, `returned`, `limitApplied`, `reason`.
+  Даже запрос с `--limit 1` может прочитать много страниц.
+- `task:chat:list`: без `--all` возвращает окно сообщений; для обхода доступной
+  истории используй `--all`, с бюджетом `--max-messages` (по умолчанию 10000).
+  Проверяй `scope`, `complete`, `hasMore`, `reason`.
+- `task:time:list`: обходит страницы в пределах бюджета 10000;
+  явный `params.NAV_PARAMS.iNumPage` ограничивает scope выбранной страницей.
+- `task:history:list`: при недоказанной навигации (`next`/`total`) выдаёт
+  partial/exit `3`. История изменений не содержит переписку.
+- `task:time:show`: поле `elapsedTime` — контекст задачи; оно не доказывает
+  сумму всех записей времени. Отсутствующее поле может дать partial/exit `3`.
+- Участники в `task:show`: недоступные users/поля сохраняют известные ID,
+  возвращая null и partial/exit `3`. Запрашивай только нужные projections.
+
+## Источники
+
+Контракт сверяется со справкой бинаря и исходниками его SHA:
+[CommandRunner](https://github.com/mesilov/bitrix24-cli/blob/a361a1fecddef0f6b77eb40b26d14c9b67d4cb86/src/Console/CommandRunner.php),
+[ResultPresenter](https://github.com/mesilov/bitrix24-cli/blob/a361a1fecddef0f6b77eb40b26d14c9b67d4cb86/src/Console/ResultPresenter.php),
+[EnvConnectionResolver](https://github.com/mesilov/bitrix24-cli/blob/a361a1fecddef0f6b77eb40b26d14c9b67d4cb86/src/Infrastructure/Connection/EnvConnectionResolver.php),
+[руководство](https://github.com/mesilov/bitrix24-cli/blob/a361a1fecddef0f6b77eb40b26d14c9b67d4cb86/docs/development.md).
