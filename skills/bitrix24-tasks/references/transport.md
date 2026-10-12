@@ -1,52 +1,52 @@
 # Контракт транспорта b24cli
 
-## Проверенная сборка и установка
+## Релиз и установка
 
-Проверено 12.10.2026 на macOS arm64: `b24cli
-dev-a361a1fecddef0f6b77eb40b26d14c9b67d4cb86` из
-[dev-ветки, GitHub Actions run 38169692267](https://github.com/mesilov/bitrix24-cli/actions/runs/38169692267).
-В этой сборке 30 команд `task:*`. Бинарь включает PHP runtime; PHP, Composer
-и Docker для его запуска не нужны.
+Проверено 12.10.2026 на macOS arm64 с опубликованным
+[релизом b24cli 0.1.0](https://github.com/mesilov/bitrix24-cli/releases/tag/0.1.0).
+Он предоставляет 30 команд `task:*` и 5 локальных команд `connection:*`.
+Бинарь включает runtime; PHP, Composer и Docker для запуска не нужны.
 
-Для скачивания артефактов необходим вход в GitHub. Используй отдельный каталог
-и скачай архивы вместе с `SHA256SUMS` из одного run:
+| Платформа | Релизный архив |
+| --- | --- |
+| Linux amd64 | [b24cli-linux-amd64.tar.gz](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/b24cli-linux-amd64.tar.gz) |
+| macOS arm64 | [b24cli-macos-arm64.tar.gz](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/b24cli-macos-arm64.tar.gz) |
+| Windows amd64 | [b24cli-windows-amd64.zip](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/b24cli-windows-amd64.zip) |
+
+Скачай архив своей платформы и
+[SHA256SUMS того же релиза](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/SHA256SUMS).
+Например, через GitHub CLI для macOS arm64:
 
 ```sh
-gh run download 38169692267 --repo mesilov/bitrix24-cli \
-  --name b24cli-release-assets --dir ./b24cli-download
+gh release download 0.1.0 --repo mesilov/bitrix24-cli \
+  --pattern b24cli-macos-arm64.tar.gz --pattern SHA256SUMS \
+  --dir ./b24cli-download
 ```
 
-В artifact находятся `b24cli-linux-amd64.tar.gz`,
-`b24cli-macos-arm64.tar.gz`, `b24cli-windows-amd64.zip`, `SHA256SUMS`.
-Проверь SHA-256 нужного архива перед распаковкой. Архив содержит executable,
-`build-info.json`, runtime metadata и license notices; сохраняй их при
-установке. Windows executable называется `b24cli.exe`.
-
-Артефакты CI имеют срок хранения. При недоступности этого run выбери успешную
-сборку с артефактами в [workflow Package standalone binaries](https://github.com/mesilov/bitrix24-cli/actions/workflows/package-static.yml?query=branch%3Adev),
-затем сверь `build-info.json`, `--version`, `list task --raw` и справку команд.
-Подробности установки и поддержки платформ:
+Проверь SHA-256 архива перед распаковкой. Распаковывай весь пакет и сохраняй
+`build-info.json`, runtime/compression metadata и все license notices вместе
+с executable. На Windows он называется `b24cli.exe`.
+После установки `b24cli --version` должен показать `b24cli 0.1.0`.
+Подробности установки и поддержки ОС — в
 [README транспорта](https://github.com/mesilov/bitrix24-cli#установка).
 
 ## Учётные данные
 
-Проверенная сборка читает полный HTTPS webhook из `BITRIX24_WEBHOOK`;
-поддержан alias `BITRIX24_PHP_SDK_PLAYGROUND_WEBHOOK`.
-Переменная процесса имеет приоритет над выбранным dotenv.
-`B24CLI_ENV_FILE` выбирает файл с credentials. Без неё fallback относится
-к корню исходников CLI (`.env.local`, затем `.env`), поэтому standalone-бинарю
-нужно явно указать абсолютный путь к файлу пользователя.
+Для разового вызова выбери один источник явно:
+`--env-file PATH` для dotenv или `--profile NAME` для сохранённого профиля.
+Эти selectors сильнее credentials из окружения и взаимоисключающие.
+Ошибка выбранного источника не переключает CLI на другое подключение.
 
 ```sh
-B24CLI_ENV_FILE="/absolute/path/to/.env.local" \
-  b24cli task:list --max-scan 100 --limit 10 --json
+b24cli --env-file "/absolute/path/to/.env.local" \
+  task:list --max-scan 100 --limit 10 --json
+b24cli --profile NAME task:list --max-scan 100 --limit 10 --json
 ```
 
 В PowerShell:
 
 ```powershell
-$env:B24CLI_ENV_FILE = 'C:\Private Config\.env.local'
-b24cli.exe task:list --max-scan 100 --limit 10 --json
+b24cli.exe --env-file 'C:\Private Config\.env.local' task:list --max-scan 100 --limit 10 --json
 ```
 
 Файл содержит `BITRIX24_WEBHOOK=…`, без shell-команд. Его разбирает CLI;
@@ -54,11 +54,51 @@ b24cli.exe task:list --max-scan 100 --limit 10 --json
 webhook и не вставляй webhook в аргументы команды. `--config` предназначен
 для несекретного JSON с ключами `timeout`, `apiPolicy`, `profile`.
 
-В проверенном бинаре `--profile` поддерживает только `default`;
-`--env-file`, `--config-dir` и `connection:*` отсутствуют. Более свежие
-исходники dev уже могут содержать их: применяй только после проверки справки
-установленной версии. Скилл не выбирает профиль или портал по собственным
-defaults.
+`profile` внутри `--config` также выбирает сохранённый профиль;
+`--profile` переопределяет его, а `--env-file` конфликтует с ним.
+Для разового выбора файла не добавляй profile в runtime config.
+
+Без явного selector CLI выбирает: process `BITRIX24_WEBHOOK`, затем alias
+`BITRIX24_PHP_SDK_PLAYGROUND_WEBHOOK`, затем `B24CLI_ENV_FILE`,
+`B24CLI_PROFILE`, сохранённый `defaultProfile`.
+Одновременно непустые `B24CLI_ENV_FILE` и `B24CLI_PROFILE` без явного selector
+дают configuration-error. Standalone-бинарь не ищет dotenv в cwd,
+рядом с executable или внутри пакета. Рекомендуемый способ — явный selector.
+
+`--profile default` в 0.1.0 означает профиль с alias `default`;
+это не специальное имя для подключения из окружения.
+
+## Сохранённые подключения и defaults
+
+`connection:*` управляют локальной конфигурацией CLI и не вызывают портал.
+Для разового чтения с `--env-file` создавать или переключать сохранённый
+профиль не требуется. Меняй локальные профили, когда это входит в запрос.
+Полная карта этих команд — в [commands.md](commands.md).
+
+Каталог выбирается через `--config-dir PATH`, затем `B24CLI_CONFIG_DIR`.
+По умолчанию Linux/macOS используют абсолютный `$XDG_CONFIG_HOME/b24cli`
+либо `$HOME/.config/b24cli`; Windows — `%APPDATA%\b24cli`.
+CLI хранит metadata в `config.json`, а webhook — отдельно в credential file.
+Webhook хранится plaintext с ограниченными правами доступа.
+
+`connection:add NAME` принимает скрытый ввод в TTY; для automation:
+
+```sh
+b24cli connection:add NAME --webhook-stdin -n < /secure/webhook.txt
+```
+
+Этот stdin содержит только webhook URL, без `BITRIX24_WEBHOOK=`.
+`connection:add` не меняет defaultProfile. Для постоянного выбора служит
+`connection:use NAME`; для разового — `--profile NAME`.
+`connection:remove NAME` удаляет только локальный профиль и credential file,
+очищая defaultProfile при совпадении. Отзыв webhook на портале не выполняется.
+
+Выбранный профиль может иметь `default.task` с `groupId`, `creatorId`,
+`responsibleId`, `allowsTimeTracking`. Defaults применяются только к
+`task:add`; явные значения полей имеют приоритет. Через process credentials
+или `--env-file` профильные defaults не применяются.
+CLI не определяет автора/исполнителя по webhook. Скилл использует только
+уже заданные пользователем значения; собственные defaults не вводит.
 
 Команды используют права настроенного пользователя. При отказе доступа
 сообщи ошибку CLI. Наличие команды не гарантирует доступ к данным
@@ -72,7 +112,9 @@ defaults.
 | `--plain` | TSV без заголовков; специальные символы экранируются. Взаимоисключается с `--json`. |
 | `--timeout SECONDS` | HTTP timeout, по умолчанию 30 секунд, максимум 300. |
 | `--config PATH` | Runtime JSON; `-` читает stdin. Credentials сюда не входят. |
-| `--profile default` | Единственный профиль проверенной сборки; можно опустить. |
+| `--profile NAME` | Выбрать сохранённый профиль, сильнее credentials окружения. |
+| `--env-file PATH` | Выбрать credential dotenv; нельзя смешивать с `--profile`. |
+| `--config-dir PATH` | Указать каталог локальной конфигурации CLI. |
 | `-n`, `--no-interaction` | Отключает интерактивные вопросы. |
 
 Глобальные опции допустимы до и после имени команды.
@@ -87,18 +129,22 @@ defaults.
 текста и JSON, чтобы кавычки, переводы строк и shell-подстановки не меняли ввод.
 Один stdin нельзя одновременно использовать для нескольких источников.
 
-`task:add` требует `title`, `creatorId`, `responsibleId`. Basic flags
+`task:add` требует title; `creatorId` и `responsibleId` передаются явно либо
+берутся из `default.task` выбранного профиля. Без них создание не проходит
+валидацию. Basic flags
 `--title`, `--creator`, `--responsible` и другие нельзя смешивать с advanced
 режимом `--fields`/`--fields-file`. JSON использует имена полей, принимаемые
-CLI, например `creatorId`. Допустимость полей проверяет CLI. При создании
-`allowsTimeTracking` по умолчанию `false`.
+CLI, например `creatorId`. Допустимость полей проверяет CLI.
+Если `allowsTimeTracking` не задан явно и отсутствует в выбранном профиле,
+используется встроенный default `false`.
 
 `task:update` отправляет только явно заданные поля; `--description=""`
 очищает описание. Изменение статуса и произвольных полей в таком патче
 не поддержано. Для участников есть отдельная команда.
 Сроки передаются в ISO8601 с часовым поясом.
 
-`--dry-run` доступен у всех команд записи/удаления. Он возвращает
+`--dry-run` доступен у команд записи/удаления задач и их ресурсов.
+Локальные `connection:*` его не поддерживают. Dry-run возвращает
 `data.plan.steps` без записей, но может делать проверочные чтения с портала.
 
 ```sh
@@ -106,7 +152,7 @@ b24cli task:update 123 --title "Новое название" --dry-run --json
 b24cli task:add --title "Пример задачи" --creator 1 --responsible 2 --dry-run --json
 ```
 
-Удаление в automation требует `--force`; на TTY CLI запрашивает подтверждение.
+Удаление задач/их ресурсов в automation требует `--force`; на TTY CLI запрашивает подтверждение.
 Этот флаг не отключает проверку привязки сообщения, записи времени или пункта
 к задаче. Удаление пункта чек-листа затрагивает его subtree; план показывает IDs.
 
@@ -118,6 +164,7 @@ JSON имеет структуру `{"data":…, "meta":…, "error":…}`,
 | Данные | Расположение |
 | --- | --- |
 | Списки | `data.items` |
+| Локальные команды подключений | `data.items` |
 | Карточка | `data.task` |
 | Поля метаданных | `data.items` |
 | Права | `data.access` |
@@ -165,7 +212,7 @@ exit `3`. При `meta.outcomeUnknown=true` ответ на запись пот�
 
 ## Источники и недостаток возможностей
 
-Источники команд и параметров — `b24cli list task --raw` и
+Источники команд и параметров — `b24cli list --raw` и
 `b24cli help ИМЯ_КОМАНДЫ` установленного бинаря.
 Работай в пределах интерфейса CLI. При неподдержанном запросе следуй
 правилу остановки из [SKILL.md](../SKILL.md) и попроси пользователя создать

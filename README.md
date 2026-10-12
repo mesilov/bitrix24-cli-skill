@@ -15,13 +15,12 @@
 - [Транспорт](skills/bitrix24-tasks/references/transport.md) — credentials,
   ввод/вывод, ошибки, dry-run и пагинация.
 - [Карта команд CLI](skills/bitrix24-tasks/references/commands.md) — все 30 команд
-  задач проверенной dev-сборки и их параметры.
+  задач и 5 команд подключений релиза `0.1.0`, с их параметрами.
 - [Проверка сборки](docs/verification.md) — происхождение бинаря и границы проверки.
 
 Бинарь устанавливается отдельно; в пакет скилла не включаются credentials
-или platform-specific executable. Для подготовки использован dev-артефакт
-[run 38169692267](https://github.com/mesilov/bitrix24-cli/actions/runs/38169692267),
-версия `dev-a361a1fecddef0f6b77eb40b26d14c9b67d4cb86`.
+или platform-specific executable. Скилл проверен с опубликованным
+[релизом CLI 0.1.0](https://github.com/mesilov/bitrix24-cli/releases/tag/0.1.0).
 
 ## Установка скилла
 
@@ -67,18 +66,21 @@ cp -R skills/bitrix24-tasks "$HOME/.config/opencode/skills/"
 
 Установи `b24cli` для своей платформы по
 [инструкции транспорта](skills/bitrix24-tasks/references/transport.md).
-Проверь `b24cli --version` и `b24cli list task --raw`.
+Проверь `b24cli --version` и `b24cli list --raw`.
 
 Для credentials в файле `.env.local` укажи абсолютный путь:
 
 ```sh
-B24CLI_ENV_FILE="/absolute/path/to/.env.local" \
-  b24cli task:list --max-scan 100 --limit 10 --json
+b24cli --env-file "/absolute/path/to/.env.local" \
+  task:list --max-scan 100 --limit 10 --json
 ```
 
 Не считай расположение `.env.local` рядом со скиллом автоматической настройкой
 standalone-бинаря. Секрет читает транспорт; включать его в скилл не нужно.
 Все особенности установленной версии уточняются через `b24cli help КОМАНДА`.
+Для сохранённого подключения используй `--profile NAME`. Одновременно
+передавать `--profile` и `--env-file` нельзя. Команды `connection:*` управляют
+локальными профилями CLI; их параметры описаны в карте команд.
 
 ## Лицензия
 
