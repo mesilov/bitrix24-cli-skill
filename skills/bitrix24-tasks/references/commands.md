@@ -44,8 +44,8 @@ b24cli --profile NAME task:list --max-scan 100 --limit 10 --json
 | --- | --- |
 | `task:add --title "Название" --creator USER_ID --responsible USER_ID` | Создать задачу; `--group-id`, `--deadline`, `--description`/`--description-file`. Отдельный advanced режим: `--fields`/`--fields-file`. |
 | `task:show TASK_ID` | Карточка; повторяемый `--select FIELD`. |
-| `task:list` | Выборка; повторяемые `--id`, `--select`, `--order FIELD:asc`; `--responsible`, `--group-id`, `--status`, `--due-before`, `--where`/`--where-file`, `--limit`, `--all`, `--max-scan`. |
-| `task:find --title "Подстрока"` | Поиск буквальной подстроки title без учёта регистра; `--group-id`, `--limit`, `--all`, `--max-scan`. |
+| `task:list` | Выборка; повторяемые `--id`, `--select`, `--order FIELD:asc`; `--responsible`, `--group-id`, `--status`, `--due-before`, `--where`/`--where-file`, `--limit`, `--all`, `--max-scan`. При наличии в help: `--deadline-window`, `--overdue`, `--timezone`, см. [временные фильтры](deadline-windows.md). |
+| `task:find --title "Подстрока"` | Поиск буквальной подстроки title без учёта регистра; `--group-id`, `--limit`, `--all`, `--max-scan`. При наличии в help: `--status`, `--deadline-window`, `--overdue`, `--timezone`, см. [временные фильтры](deadline-windows.md). |
 | `task:update TASK_ID --title "Название"` | Явный патч; `--creator`, `--responsible`, `--group-id`, `--deadline`, `--description`/`--description-file`. Отдельный режим `--fields`/`--fields-file`. |
 | `task:delete TASK_ID` | Удалить задачу; `--force`. |
 | `task:fields:list` | Metadata всех полей; `--name FIELD` выбирает metadata одного поля. |
