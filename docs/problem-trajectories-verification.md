@@ -24,3 +24,17 @@ OpenSpec `analyze-agent-trajectories` в репозитории CLI. Базов�
 Codex/Claude/OpenCode, актуализация установленного пользовательского пакета,
 Windows/macOS standalone doctor и live endpoint не выполнялись. Расписание,
 чаты/rollout files и прямой Bitrix24 API отсутствуют в расширении скилла.
+
+## Review follow-up #7 / #107
+
+Исправлен постоянный registration key в исполняемом примере: агент заменяет
+`<UNIQUE_EPISODE_KEY>` отдельным opaque значением для каждого эпизода и сохраняет
+его с JSON для retries. Placeholder нельзя передавать буквально. Publication
+instructions отражают CLI/skill versions и explicit unknown.
+
+Повторены quick_validate и Markdown link checks. Public CLI smoke (network=none)
+теперь содержит 7 этапов: два distinct keys дают разные card IDs, retry первого
+не создаёт новый report, preview содержит skill versions. Итоговый CLI suite:
+734 tests / 6020 assertions. Полный отчёт O1–O6 находится в
+`openspec/changes/analyze-agent-trajectories/review.md` CLI MR #107.
+Native agent UI и live feedback этой проверкой по-прежнему не покрыты.

@@ -68,11 +68,15 @@ report бери из `--version`. Передай подготовленный JS
 реализации хранения/алгоритма. Например:
 
 ```sh
-b24cli doctor:problem-trajectory --report-file report.json --idempotency-key gap-episode --json
+b24cli doctor:problem-trajectory --report-file report.json --idempotency-key '<UNIQUE_EPISODE_KEY>' --json
 ```
 
-Для каждого эпизода выбери отдельный opaque retry key; повторяй тот же key/JSON
-после неопределённого результата регистрации, не создавай новую карточку на каждый retry.
+До выполнения замени `<UNIQUE_EPISODE_KEY>` новым уникальным opaque ключом
+этого эпизода (1..64 символа `[A-Za-z0-9_-]`). Агент выбирает ключ сам и
+сохраняет его вместе с подготовленным JSON для retry; placeholder не является
+готовым значением. Для другого эпизода нужен другой ключ, даже при похожем
+сценарии. После неопределённого результата повторяй тот же key/JSON,
+не создавай новую карточку на каждый retry.
 Не используй в key персональные IDs, пути или контакты.
 Проверь exit code и `data.cardId/state`. При сохранении сообщи пользователю
 недостающую возможность и сохранённый ID; предложи immediate issue либо
@@ -109,7 +113,9 @@ issueLinks. Корень batch: schemaVersion=1, opaque batchId, groups. Исп�
 b24cli doctor:problem-trajectory --action record-analysis --batch-file analysis.json --json
 ```
 
-Выдай один digest с count of reports, владельцами и предложениями. Покажи
+Выдай один digest с count of reports, владельцами и предложениями. В publication
+CLI добавляет версии CLI/скилла из выбранных карточек; unknown означает
+неизвестную версию скилла, её нельзя угадывать. Покажи
 `data.groups[].publication` — это текст, который будет использован при отправке.
 CLI сохраняет анализ и Processing date; новые карточки вне snapshot остаются
 pending. Само завершение анализа не является согласием на передачу.
