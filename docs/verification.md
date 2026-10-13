@@ -73,3 +73,17 @@ Markdown и относительные ссылки. Метаданные Codex 
 [Codex](https://developers.openai.com/codex/skills/),
 [OpenCode](https://opencode.ai/docs/skills/).
 Запуск внутри всех трёх клиентов отдельно не выполнялся.
+
+## Deadline contract update 2026-10-13
+
+[CLI issue #95](https://github.com/mesilov/bitrix24-cli/issues/95) добавляет
+--deadline-window, --overdue и --timezone. Карта references/deadline-windows.md
+содержит все пользовательские интервалы, отличие deadline от closed date,
+проверку доступности flags в help и public CLI-only поведение без собственного
+расчёта дат. Ссылки и YAML frontmatter проверены штатным quick_validate.py;
+canonical values сверены с DeadlineWindowResolver и тестами CLI.
+
+Этот документ не утверждает выпуск нового бинаря: 0.1.0 остаётся базовой
+проверенной версией, а новые возможности skill включаются по help установленного
+CLI. Проверка языка инструкций и mapping выполнена локально; выполнение skill
+внутри всех AI-клиентов отдельно не проверялось.
