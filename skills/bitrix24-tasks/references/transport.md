@@ -215,5 +215,7 @@ exit `3`. При `meta.outcomeUnknown=true` ответ на запись пот�
 Источники команд и параметров — `b24cli list --raw` и
 `b24cli help ИМЯ_КОМАНДЫ` установленного бинаря.
 Работай в пределах интерфейса CLI. При неподдержанном запросе следуй
-правилу остановки из [SKILL.md](../SKILL.md) и попроси пользователя создать
-[issue в bitrix24-cli](https://github.com/mesilov/bitrix24-cli/issues).
+правилу остановки из [SKILL.md](../SKILL.md) и
+[регистрации карточки через doctor](problem-trajectories.md), если он доступен.
+Без doctor предложи обычный [issue в bitrix24-cli](https://github.com/mesilov/bitrix24-cli/issues).
+Служебные карточки/config и feedback transport доступны скиллу только через CLI.

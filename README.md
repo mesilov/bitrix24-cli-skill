@@ -6,8 +6,10 @@
 
 Скилл содержит описание транспорта и карту доступных команд CLI, без
 организационных правил, фиксированных порталов, ID, ролей или defaults задач.
-Если CLI не покрывает запрос, скилл останавливается и просит пользователя
-создать [issue в bitrix24-cli](https://github.com/mesilov/bitrix24-cli/issues).
+Если CLI не покрывает запрос, скилл останавливает неподдерживаемый путь и при
+наличии doctor сохраняет обезличенную карточку публичной командой CLI. При
+запуске он проверяет weekly предложение пакетного разбора; без doctor предлагает
+обычный [issue в bitrix24-cli](https://github.com/mesilov/bitrix24-cli/issues).
 
 ## Состав
 
@@ -18,7 +20,13 @@
   задач и 5 команд подключений релиза `0.1.0`, с их параметрами.
 - [Временные фильтры](skills/bitrix24-tasks/references/deadline-windows.md) —
   перевод календарных дедлайнов и просрочки в public CLI (при наличии flags в help).
+- [Проблемные сценарии](skills/bitrix24-tasks/references/problem-trajectories.md) —
+  capability-gated doctor, локальные карточки, weekly разбор и явный feedback mock
+  из [#96](https://github.com/mesilov/bitrix24-cli/issues/96). Это дополнение к карте
+  релиза 0.1.0; оно используется только при наличии команд/actions в help.
 - [Проверка сборки](docs/verification.md) — происхождение бинаря и границы проверки.
+- [Проверка doctor workflow](docs/problem-trajectories-verification.md) —
+  исходники CLI, package validation и network=none smoke публичных примеров.
 
 Бинарь устанавливается отдельно; в пакет скилла не включаются credentials
 или platform-specific executable. Скилл проверен с опубликованным
