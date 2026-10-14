@@ -1,34 +1,53 @@
 # Контракт транспорта b24cli
 
-## Релиз и установка
+## Версия, источник и установка
 
-Проверено 12.10.2026 на macOS arm64 с опубликованным
-[релизом b24cli 0.1.0](https://github.com/mesilov/bitrix24-cli/releases/tag/0.1.0).
-Он предоставляет 30 команд `task:*` и 5 локальных команд `connection:*`.
+Карта для **0.2.0** сверена 14.10.2026 по `dev`:
+`1ed4422a8d7a33138134d6a8763594820c75c256`,
+[карта приложения](https://github.com/mesilov/bitrix24-cli/blob/1ed4422a8d7a33138134d6a8763594820c75c256/docs/cli-command-map.md).
+Фактические `list`, root help, about и обе формы help всех 56 публичных команд
+выполнены по этим исходникам в Docker без сети. Source launcher без build-info
+показывает 0.1.0: версия строки сама по себе не определяет этот dev-каталог.
+
+Дополнительно проверен standalone **0.2.0-rc-1** на macOS arm64:
+source SHA `9c268e5bbb6b3c3cea85cfbb3726cbd8b5efbb99`,
+[сборка Actions](https://github.com/mesilov/bitrix24-cli/actions/runs/38537920077).
+Каталог/flags совпадают с dev; изменение расчёта длительностей после RC
+описано в [рабочих сценариях](task-workflows.md).
+Последний опубликованный стабильный релиз на дату проверки —
+[0.1.0](https://github.com/mesilov/bitrix24-cli/releases/tag/0.1.0);
+он не предоставляет новую поверхность 0.2.0. Финальная проверка стабильной
+сборки остаётся в [release issue #109](https://github.com/mesilov/bitrix24-cli/issues/109).
+
+Для актуальной dev-сборки используй
+[инструкцию builds](https://github.com/mesilov/bitrix24-cli/blob/dev/docs/builds.md)
+и сверяй source SHA из metadata. Для воспроизводимой проверки RC доступен
+[пакет архивов и SHA256SUMS](https://github.com/mesilov/bitrix24-cli/actions/runs/38537920077/artifacts/11881912444)
+(до 13.11.2026, требуется GitHub read access).
 Бинарь включает runtime; PHP, Composer и Docker для запуска не нужны.
 
 | Платформа | Релизный архив |
 | --- | --- |
-| Linux amd64 | [b24cli-linux-amd64.tar.gz](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/b24cli-linux-amd64.tar.gz) |
-| macOS arm64 | [b24cli-macos-arm64.tar.gz](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/b24cli-macos-arm64.tar.gz) |
-| Windows amd64 | [b24cli-windows-amd64.zip](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/b24cli-windows-amd64.zip) |
+| Linux amd64 | `b24cli-linux-amd64.tar.gz` из выбранного artifact set |
+| macOS arm64 | `b24cli-macos-arm64.tar.gz` из выбранного artifact set |
+| Windows amd64 | `b24cli-windows-amd64.zip` из выбранного artifact set |
 
-Скачай архив своей платформы и
-[SHA256SUMS того же релиза](https://github.com/mesilov/bitrix24-cli/releases/download/0.1.0/SHA256SUMS).
-Например, через GitHub CLI для macOS arm64:
+Скачай архив своей платформы и SHA256SUMS одной сборки.
+Например, воспроизводимый RC-пакет через GitHub CLI:
 
 ```sh
-gh release download 0.1.0 --repo mesilov/bitrix24-cli \
-  --pattern b24cli-macos-arm64.tar.gz --pattern SHA256SUMS \
+gh run download 38537920077 --repo mesilov/bitrix24-cli \
+  --name b24cli-release-assets \
   --dir ./b24cli-download
 ```
 
 Проверь SHA-256 архива перед распаковкой. Распаковывай весь пакет и сохраняй
 `build-info.json`, runtime/compression metadata и все license notices вместе
 с executable. На Windows он называется `b24cli.exe`.
-После установки `b24cli --version` должен показать `b24cli 0.1.0`.
+После установки RC `b24cli --version` должен показать `b24cli 0.2.0-rc-1`;
+dev и стабильную сборку проверяй по её metadata/version/help, не по имени архива.
 Подробности установки и поддержки ОС — в
-[README транспорта](https://github.com/mesilov/bitrix24-cli#установка).
+[инструкции установки](https://github.com/mesilov/bitrix24-cli/blob/dev/docs/install.md).
 
 ## Учётные данные
 
@@ -52,7 +71,7 @@ b24cli.exe --env-file 'C:\Private Config\.env.local' task:list --max-scan 100 --
 Файл содержит `BITRIX24_WEBHOOK=…`, без shell-команд. Его разбирает CLI;
 выполнять `source .env.local` не требуется. Не выводи файл или переменную с
 webhook и не вставляй webhook в аргументы команды. `--config` предназначен
-для несекретного JSON с ключами `timeout`, `apiPolicy`, `profile`.
+для несекретного JSON с ключами `timeout`, `apiPolicy`, `profile`, `maxUploadBytes`.
 
 `profile` внутри `--config` также выбирает сохранённый профиль;
 `--profile` переопределяет его, а `--env-file` конфликтует с ним.
@@ -65,7 +84,7 @@ webhook и не вставляй webhook в аргументы команды. `
 дают configuration-error. Standalone-бинарь не ищет dotenv в cwd,
 рядом с executable или внутри пакета. Рекомендуемый способ — явный selector.
 
-`--profile default` в 0.1.0 означает профиль с alias `default`;
+`--profile default` означает профиль с alias `default`;
 это не специальное имя для подключения из окружения.
 
 ## Сохранённые подключения и defaults
@@ -100,6 +119,15 @@ b24cli connection:add NAME --webhook-stdin -n < /secure/webhook.txt
 CLI не определяет автора/исполнителя по webhook. Скилл использует только
 уже заданные пользователем значения; собственные defaults не вводит.
 
+В 0.2.0 профиль также может иметь `default.users.observerId`, `managerId`,
+`autoAddObserver`. Только `autoAddObserver=true` добавляет default наблюдателя
+после task:add, сохраняя существующих; требуется observerId. Ошибка после
+создания даёт partial и TASK_ID: проверь задачу вместо повторения task:add.
+Manager ID выбирается явно через `users:manager --source config`;
+без этой опции команда использует оргструктуру. Env/process подключения
+не наследуют default.users. Настройка — public connection:add flags из карты;
+не редактируй служебный config вручную.
+
 Команды используют права настроенного пользователя. При отказе доступа
 сообщи ошибку CLI. Наличие команды не гарантирует доступ к данным
 конкретного портала.
@@ -109,8 +137,12 @@ CLI не определяет автора/исполнителя по webhook. 
 | Опция | Контракт |
 | --- | --- |
 | `--json` | Один JSON envelope в stdout; диагностика в stderr. |
+| `-h`, `--help` | Обзор без имени команды; с именем — её справка, без подключения. |
+| `--about` | Назначение, версия, автор, лицензия, ссылки, без подключения. |
+| `-V`, `--version` | Версия сборки. |
 | `--plain` | TSV без заголовков; специальные символы экранируются. Взаимоисключается с `--json`. |
 | `--timeout SECONDS` | HTTP timeout, по умолчанию 30 секунд, максимум 300. |
+| `--api-policy task-v3\|strict-rest3` | Default task-v3 допускает объявленные дополнительные маршруты. Strict-rest3 отклоняет несовместимый план до подключения, exit 4. |
 | `--config PATH` | Runtime JSON; `-` читает stdin. Credentials сюда не входят. |
 | `--profile NAME` | Выбрать сохранённый профиль, сильнее credentials окружения. |
 | `--env-file PATH` | Выбрать credential dotenv; нельзя смешивать с `--profile`. |
@@ -125,7 +157,7 @@ CLI не определяет автора/исполнителя по webhook. 
 ## Текст, JSON и изменения
 
 `--description-file`, `--text-file`, `--fields-file`, `--where-file`,
-`--params-file` читают файл либо stdin (`-`). Используй файл для сложного
+`--params-file`, `--user-fields-file` читают файл либо stdin (`-`). Используй файл для сложного
 текста и JSON, чтобы кавычки, переводы строк и shell-подстановки не меняли ввод.
 Один stdin нельзя одновременно использовать для нескольких источников.
 
@@ -140,7 +172,8 @@ CLI, например `creatorId`. Допустимость полей пров�
 
 `task:update` отправляет только явно заданные поля; `--description=""`
 очищает описание. Изменение статуса и произвольных полей в таком патче
-не поддержано. Для участников есть отдельная команда.
+не поддержано. Для статуса, участников, результатов, тегов и custom полей
+есть явные команды/опции; контракты — в [рабочих сценариях](task-workflows.md).
 Сроки передаются в ISO8601 с часовым поясом.
 
 `--dry-run` доступен у команд записи/удаления задач и их ресурсов.
@@ -165,11 +198,16 @@ JSON имеет структуру `{"data":…, "meta":…, "error":…}`,
 | --- | --- |
 | Списки | `data.items` |
 | Локальные команды подключений | `data.items` |
+| Поиск пользователей / коллеги | `data.items` (исходные имена `ID`, `NAME` и другие) |
+| Текущий пользователь / руководитель | `data.user`; у manager допустим null |
 | Карточка | `data.task` |
 | Поля метаданных | `data.items` |
 | Права | `data.access` |
 | Контекст времени | `data.time` |
 | Одна мутация | `data.operation` |
+| Lifecycle | `data.operation` и фактический `data.task.status` |
+| Длительности статусов | `data.intervals`, `data.totals`, semantics в `meta` |
+| Doctor | Зависит от action: см. [problem-trajectories.md](problem-trajectories.md). |
 | Несколько шагов | `data.items`, подтверждённые/частичные результаты |
 | Dry-run | `data.plan.steps` |
 
@@ -192,8 +230,11 @@ exit `3`. При `meta.outcomeUnknown=true` ответ на запись пот�
 
 ## Полнота и пагинация
 
-- `task:list`/`task:find`: только `--id` задаёт серверный ID-фильтр;
-  остальные фильтры и поиск title применяются локально при обходе.
+- `task:list`/`task:find` без временных flags: только `--id` задаёт серверный ID-фильтр;
+  остальные обычные фильтры и поиск title применяются локально при обходе.
+  `--role` относится к пользователю подключения; чтение роли не обещает
+  уменьшения scan. Временной режим задаёт серверный диапазон дедлайна;
+  см. [deadline-windows.md](deadline-windows.md). Default порядок id DESC.
   `--limit` режет вывод; `--all` снимает только этот лимит.
   `--max-scan` ограничивает обход, по умолчанию 10000.
   Проверяй `complete`, `scanned`, `matched`, `returned`, `limitApplied`, `reason`.
@@ -209,11 +250,15 @@ exit `3`. При `meta.outcomeUnknown=true` ответ на запись пот�
   сумму всех записей времени. Отсутствующее поле может дать partial/exit `3`.
 - Участники в `task:show`: недоступные users/поля сохраняют известные ID,
   возвращая null и partial/exit `3`. Запрашивай только нужные projections.
+- `users:find`/`users:colleagues`: limit 50, max-scan 1000 по умолчанию;
+  `--all` снимает только limit. Пустой полный список — exit 0; неполный — exit 3.
+- `task:result:list`: limit/all/max-scan; результат остаётся в границах прав.
+- `task:my`: явный user ID, limit 50, budget 10000; доступен только max-scan.
 
 ## Источники и недостаток возможностей
 
 Источники команд и параметров — `b24cli list --raw` и
-`b24cli help ИМЯ_КОМАНДЫ` установленного бинаря.
+`b24cli ИМЯ_КОМАНДЫ --help` установленного бинаря.
 Работай в пределах интерфейса CLI. При неподдержанном запросе следуй
 правилу остановки из [SKILL.md](../SKILL.md) и
 [регистрации карточки через doctor](problem-trajectories.md), если он доступен.

@@ -1,0 +1,582 @@
+{
+  "checkedDate": "2026-10-14",
+  "sourceRef": "dev",
+  "sourceSha": "1ed4422a8d7a33138134d6a8763594820c75c256",
+  "sourceLauncherVersion": "0.1.0 (without build-info.json)",
+  "publicCommandCount": 56,
+  "counts": {
+    "completion": 1,
+    "help": 1,
+    "list": 1,
+    "connection": 5,
+    "doctor": 1,
+    "task": 43,
+    "users": 4
+  },
+  "publicCommandHelpCalls": 112,
+  "rootHelpForms": [
+    "--help",
+    "-h"
+  ],
+  "aboutChecked": true,
+  "commandMapCoverage": "56/56",
+  "documentedTableOptionsValid": true,
+  "shellCliExamplesChecked": 35,
+  "localLinksChecked": 35,
+  "offlineCliCases": 42,
+  "offlineExitCodeCounts": {
+    "0": 19,
+    "1": 17,
+    "2": 3,
+    "4": 3
+  },
+  "apiCalls": 0,
+  "sourceRuntimeNetwork": "none",
+  "rc": {
+    "version": "0.2.0-rc-1",
+    "sourceSha": "9c268e5bbb6b3c3cea85cfbb3726cbd8b5efbb99",
+    "platform": "macos-arm64",
+    "archiveSha256": "f402ffaaf74f92412593354b57e0ac5799a7a2785e559019d1bcd073f47f08c2",
+    "binarySha256": "ee0b9e56d814ce117a546addd5e439352277c2183209e266da14249eb71975ef",
+    "runId": 38537920077,
+    "artifactId": 11881912444,
+    "publicCommands": 56,
+    "publicCommandHelpCalls": 112,
+    "catalogRecordsDifferentFromDev": [
+      "task:status:durations"
+    ]
+  },
+  "commands": [
+    {
+      "name": "completion",
+      "options": [
+        "debug"
+      ],
+      "helpSha256": "73222406a52a2e717104886de82f98630619a6024efe1e94015fa2381ed2fb06"
+    },
+    {
+      "name": "help",
+      "options": [
+        "format",
+        "raw"
+      ],
+      "helpSha256": "01daa163f061662a92be50a4f944331a2018000e9fcfd57c50c4b154a32cd8c1"
+    },
+    {
+      "name": "list",
+      "options": [
+        "raw",
+        "format",
+        "short"
+      ],
+      "helpSha256": "efa9821474c53ede066eaf3c8f7e557846057433ec73096260258da65cd8fbc3"
+    },
+    {
+      "name": "connection:add",
+      "options": [
+        "webhook-stdin",
+        "portal-domain",
+        "group-id",
+        "creator-id",
+        "responsible-id",
+        "allows-time-tracking",
+        "observer-id",
+        "manager-id",
+        "auto-add-observer"
+      ],
+      "helpSha256": "8739c4d7acac435baa82f60b996d3913b6cda936e4caf3b75ef64d45c7307648"
+    },
+    {
+      "name": "connection:list",
+      "options": [],
+      "helpSha256": "a35ef9b430d432ed040b6b495663bc3f10179c1537685faee773c96057a71aa5"
+    },
+    {
+      "name": "connection:remove",
+      "options": [],
+      "helpSha256": "d77308068ec8bf564e3d9808ff0d6af4da8b9992420962ab43fbdc040bb8c53f"
+    },
+    {
+      "name": "connection:show",
+      "options": [],
+      "helpSha256": "03f623bc945919e2992a5eca7dbf50fa99ca71f322529a5b3e762516ba463ad5"
+    },
+    {
+      "name": "connection:use",
+      "options": [],
+      "helpSha256": "ac05ea3accf3cae3b83228d77d83e7d4424c4eae34b1c9753cdda1549f404c7c"
+    },
+    {
+      "name": "doctor:problem-trajectory",
+      "options": [
+        "action",
+        "report-file",
+        "settings-file",
+        "batch-file",
+        "idempotency-key",
+        "state",
+        "limit",
+        "offset",
+        "confirm-publication",
+        "mock-feedback"
+      ],
+      "helpSha256": "80d5d2d1e6bcbf171a331784ea87f6a202885a413247bd7da9cdd2374710dfbc"
+    },
+    {
+      "name": "task:access:show",
+      "options": [],
+      "helpSha256": "952a90f4d9df8957b6a4832f4cf4fc44dee38fac6ed966993dddad4c43c6ea82"
+    },
+    {
+      "name": "task:add",
+      "options": [
+        "title",
+        "creator",
+        "responsible",
+        "group-id",
+        "deadline",
+        "description",
+        "description-file",
+        "tag",
+        "user-fields",
+        "user-fields-file",
+        "fields",
+        "fields-file",
+        "dry-run"
+      ],
+      "helpSha256": "352a5611383459eb728f1c3143017d80636c2219ba782f5ce2243e1ed27fec4c"
+    },
+    {
+      "name": "task:approve",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "84d40c274925b950fe3a898d10ac930a3555b02e91e9ca39757874571210f148"
+    },
+    {
+      "name": "task:assign",
+      "options": [
+        "responsible",
+        "dry-run"
+      ],
+      "helpSha256": "0b0e6f1e4701c7883f3dd868fa5a481cd4b995c00417ea9a86a2a0d859c4112a"
+    },
+    {
+      "name": "task:chat:delete",
+      "options": [
+        "message",
+        "force",
+        "dry-run"
+      ],
+      "helpSha256": "08a0d836c5721787791552b862a59e0add44a09ac96abc591668a35c0ec24a66"
+    },
+    {
+      "name": "task:chat:list",
+      "options": [
+        "before",
+        "after",
+        "limit",
+        "all",
+        "max-messages"
+      ],
+      "helpSha256": "02798ba3aefe393ea7a844fb3cd28bcd4d81dd8e48157d413985d5fc54a9abe4"
+    },
+    {
+      "name": "task:chat:send",
+      "options": [
+        "text",
+        "text-file",
+        "dry-run"
+      ],
+      "helpSha256": "dd5f3278781eb2f152ebff80b9c9da90b11dbd67f59bc68a8ddce88a4f310de2"
+    },
+    {
+      "name": "task:chat:update",
+      "options": [
+        "message",
+        "text",
+        "text-file",
+        "dry-run"
+      ],
+      "helpSha256": "3ab0978f92f02a77ff68ad8a664312cb303b013ec62748e5f464675fd3d4ca03"
+    },
+    {
+      "name": "task:checklist:add",
+      "options": [
+        "title",
+        "dry-run"
+      ],
+      "helpSha256": "9a3181f69f54355dbec41234c53913da0c2c0858c0766d1ab4f77ed93d7ce61c"
+    },
+    {
+      "name": "task:checklist:item:add",
+      "options": [
+        "checklist",
+        "title",
+        "parent",
+        "dry-run"
+      ],
+      "helpSha256": "a0f927acfa09d9f108353e0cc1c7ee6e60ba7aa6458017a8ffce116d426e6cf1"
+    },
+    {
+      "name": "task:checklist:item:complete",
+      "options": [
+        "item",
+        "dry-run"
+      ],
+      "helpSha256": "83a798db0211b4005d08b6dd900882a85f5405bc026d835940aa6a61f3d6f9c0"
+    },
+    {
+      "name": "task:checklist:item:delete",
+      "options": [
+        "item",
+        "force",
+        "dry-run"
+      ],
+      "helpSha256": "ee9e18964510055beaa823c05d606f5cb173b27e34d5d5d25ad179c8cb6cf7b2"
+    },
+    {
+      "name": "task:checklist:item:list",
+      "options": [
+        "checklist"
+      ],
+      "helpSha256": "8e8aab627fbe1c3dd75629637db8a09c44f0b4f849fad5caa5493dd6353b400e"
+    },
+    {
+      "name": "task:checklist:item:renew",
+      "options": [
+        "item",
+        "dry-run"
+      ],
+      "helpSha256": "132abf0bc800d3633bbd1fad9fb670969c5a9311f3861cda5ee03196df198525"
+    },
+    {
+      "name": "task:checklist:item:update",
+      "options": [
+        "item",
+        "title",
+        "dry-run"
+      ],
+      "helpSha256": "ba458c3631036d66e040c5437820e98ed03487e3fee8b4af62df6268f33c31ee"
+    },
+    {
+      "name": "task:checklist:list",
+      "options": [],
+      "helpSha256": "9dcf251fa8cbd4e12b86401703a07b7f3bccbcdb570c7f1c39453a190b15737d"
+    },
+    {
+      "name": "task:complete",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "aec681f4c8a4d31391422794fd5f4a662035272534d3e384884a8c30a17d6a83"
+    },
+    {
+      "name": "task:deadline:set",
+      "options": [
+        "at",
+        "dry-run"
+      ],
+      "helpSha256": "5a5870afc48c44bb3a1a7a7449c8f8b174dc469a5dfe77238c369095e14c668f"
+    },
+    {
+      "name": "task:defer",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "59cf7c803f8885facf60bde06254c43370027844b247c21178c59809a5a0282b"
+    },
+    {
+      "name": "task:delete",
+      "options": [
+        "force",
+        "dry-run"
+      ],
+      "helpSha256": "a13a409a8451d7f8d15a55d62edf30cbc4def16b876a3692404c4611747af388"
+    },
+    {
+      "name": "task:disapprove",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "dcda9f5856c193233ce7ddeeeb4bea5a411872c5b283980c9968a932f78904a6"
+    },
+    {
+      "name": "task:fields:list",
+      "options": [
+        "name"
+      ],
+      "helpSha256": "d0ce76bc3abddfcfb2c4c87b12a8767f740e4adff6e8bb6de4a30ce1e7afce6b"
+    },
+    {
+      "name": "task:file:attach",
+      "options": [
+        "file-id",
+        "file",
+        "folder-id",
+        "name",
+        "dry-run"
+      ],
+      "helpSha256": "d56e19ef7d000c3fa1fcb3ea92a9b2be8ec8029f48f541a2683eecbfc91666cb"
+    },
+    {
+      "name": "task:find",
+      "options": [
+        "deadline-window",
+        "overdue",
+        "timezone",
+        "status",
+        "role",
+        "title",
+        "group-id",
+        "id",
+        "responsible",
+        "due-before",
+        "where",
+        "where-file",
+        "limit",
+        "all",
+        "order",
+        "max-scan"
+      ],
+      "helpSha256": "0d8d38781e4a41a039d532e66969990f3099d0be7ac308fbbc4513ad8a1b298a"
+    },
+    {
+      "name": "task:history:list",
+      "options": [
+        "params",
+        "params-file"
+      ],
+      "helpSha256": "fa89aa006ffd960c2ff2165e4bec577ef2dd908ab5e89aa1e8130e76c6a551fa"
+    },
+    {
+      "name": "task:list",
+      "options": [
+        "deadline-window",
+        "overdue",
+        "timezone",
+        "role",
+        "id",
+        "responsible",
+        "group-id",
+        "status",
+        "due-before",
+        "where",
+        "where-file",
+        "select",
+        "order",
+        "limit",
+        "all",
+        "max-scan"
+      ],
+      "helpSha256": "82ec92e5bd51ba13b27e977c9afa3888ea2a3abfc874b0f71f62d3376fbb20a3"
+    },
+    {
+      "name": "task:my",
+      "options": [
+        "user",
+        "open",
+        "due-before",
+        "max-scan"
+      ],
+      "helpSha256": "07c7704d0595586bde369762323a5a27d0652e013db22b4f380a3c5b4b0d58b0"
+    },
+    {
+      "name": "task:participants:set",
+      "options": [
+        "accomplice",
+        "clear-accomplices",
+        "auditor",
+        "clear-auditors",
+        "dry-run"
+      ],
+      "helpSha256": "f61621073071f2012e7effd0ac9685e3e6ca6d54beb65a4d945aa8f8743e47ff"
+    },
+    {
+      "name": "task:pause",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "d90af9bfdf7301013ee23dd9df4ced5daa129733cf1bcfcb115992ac0bb25b24"
+    },
+    {
+      "name": "task:renew",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "96fe06b1e8d7c4e435de668b5d0daddaeb776df8a0498a3e9a221e281702fcbc"
+    },
+    {
+      "name": "task:result:add",
+      "options": [
+        "text",
+        "text-file",
+        "dry-run"
+      ],
+      "helpSha256": "59fcad02ff96ac7d589de1ce221aa04da10339c041261d7928cd6a496d6876a6"
+    },
+    {
+      "name": "task:result:delete",
+      "options": [
+        "result",
+        "dry-run",
+        "force"
+      ],
+      "helpSha256": "f437a7c6d1f562f5a8a3d52251fc9d046e8722dd8d3640a975a41b0555713309"
+    },
+    {
+      "name": "task:result:list",
+      "options": [
+        "limit",
+        "all",
+        "max-scan"
+      ],
+      "helpSha256": "b9cbdb3fb0acde20e8088b306d21db015a1f425316632b80f6bb05b72e13fefc"
+    },
+    {
+      "name": "task:result:update",
+      "options": [
+        "result",
+        "text",
+        "text-file",
+        "dry-run"
+      ],
+      "helpSha256": "f45c038b9dee8865d80e34bf1f4d147ae629aacc5ad6d983afbeb1c51a1a50ae"
+    },
+    {
+      "name": "task:show",
+      "options": [
+        "select"
+      ],
+      "helpSha256": "d26cb2470f200375f6b3e77de9de5c19b0ef5b6c164cc15d6bf9d18d27f1ec0c"
+    },
+    {
+      "name": "task:start",
+      "options": [
+        "dry-run"
+      ],
+      "helpSha256": "320c02cf2a975e54c35e91bbb0e5c8c7b3efef8bcb24e79e479baa12547c1f76"
+    },
+    {
+      "name": "task:status:durations",
+      "options": [
+        "as-of"
+      ],
+      "helpSha256": "5244c717eecfb61eba7885d0af9b63c4683478d0ec3b735d50b242802ff1586d"
+    },
+    {
+      "name": "task:time:add",
+      "options": [
+        "seconds",
+        "text",
+        "dry-run"
+      ],
+      "helpSha256": "922b27594ca40cbe34050e1c6c568d0541057bf103c7492a7eaeb013b5c0fa19"
+    },
+    {
+      "name": "task:time:delete",
+      "options": [
+        "entry",
+        "force",
+        "dry-run"
+      ],
+      "helpSha256": "391358d5b9c6c1c28e0f8ca1b68994a9ca7989f1a7f3dab199275e353f53fe02"
+    },
+    {
+      "name": "task:time:list",
+      "options": [
+        "params",
+        "params-file"
+      ],
+      "helpSha256": "0e4c3ff6467f713994609d222de4767549db3a81f2e1254cf8c0358ff1eb521b"
+    },
+    {
+      "name": "task:time:show",
+      "options": [],
+      "helpSha256": "1406a089d8933d345b98f5f1020c4e0927eb9db6d1e739862c55907685b093e1"
+    },
+    {
+      "name": "task:time:update",
+      "options": [
+        "entry",
+        "seconds",
+        "text",
+        "dry-run"
+      ],
+      "helpSha256": "012da76f44fd941f5c905042f917863ab36ccfc23215d419af72bfa9f787fe0b"
+    },
+    {
+      "name": "task:update",
+      "options": [
+        "title",
+        "creator",
+        "responsible",
+        "group-id",
+        "deadline",
+        "description",
+        "description-file",
+        "tag",
+        "clear-tags",
+        "user-fields",
+        "user-fields-file",
+        "fields",
+        "fields-file",
+        "dry-run"
+      ],
+      "helpSha256": "a24cb80e9415de9946bb4c35128b7b4c24f1fe4f114c20b9cdb3ae69a84e2d03"
+    },
+    {
+      "name": "users:colleagues",
+      "options": [
+        "department-id",
+        "limit",
+        "all",
+        "max-scan"
+      ],
+      "helpSha256": "1f26534ef7adf824fc6abc935fd0fdbb24560ad63aae7a15d496c9d6a1133ccf"
+    },
+    {
+      "name": "users:current",
+      "options": [],
+      "helpSha256": "3523f9305dd2dcc81bfe83eb2f23f08047ad53c4c2c8aabfed4ec740e13c53a8"
+    },
+    {
+      "name": "users:find",
+      "options": [
+        "name",
+        "email",
+        "limit",
+        "all",
+        "max-scan"
+      ],
+      "helpSha256": "d64e39bfb224ebb6dd864ce5e1ad145bce9cd7b4c13f2bbc31cda7ae27089991"
+    },
+    {
+      "name": "users:manager",
+      "options": [
+        "source",
+        "department-id"
+      ],
+      "helpSha256": "a385214585032f97b5094bcf0720f2f15b2d00b9977f18138e5398478c4996cf"
+    }
+  ],
+  "globalOptions": [
+    "help",
+    "silent",
+    "quiet",
+    "verbose",
+    "version",
+    "ansi",
+    "no-ansi",
+    "no-interaction",
+    "about",
+    "json",
+    "plain",
+    "profile",
+    "env-file",
+    "config-dir",
+    "config",
+    "timeout",
+    "api-policy"
+  ]
+}
