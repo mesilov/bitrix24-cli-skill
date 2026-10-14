@@ -1,0 +1,21 @@
+# Changelog
+
+## [Unreleased]
+
+### Добавлено
+
+- Репозиторный `bitrix24-cli-skill-maintainer`: сопровождение пакета через
+  публичный CLI, проверка поставки и обязательная содержательная запись
+  в changelog в каждом PR с изменениями. Diff changelog проверяется перед
+  открытием PR и непосредственно перед merge
+  ([#8](https://github.com/mesilov/bitrix24-cli-skill/issues/8)).
+
+### Документировано
+
+- Зафиксировано покрытие относительных календарных периодов дедлайна для
+  `task:list`/`task:find` через `--deadline-window`, `--overdue` и `--timezone`.
+  Карта уже находится в `main`; интерфейс подтверждён на CLI `0.2.0-rc-1`,
+  что не означает публикацию стабильного CLI 0.2.0. Дополнительные периоды,
+  назначение относительных сроков и фильтры создания/завершения выделены
+  в [CLI #141](https://github.com/mesilov/bitrix24-cli/issues/141) на 0.3.0
+  ([#4](https://github.com/mesilov/bitrix24-cli-skill/issues/4)).
