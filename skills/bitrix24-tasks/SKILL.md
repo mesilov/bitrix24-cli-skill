@@ -1,6 +1,6 @@
 ---
 name: bitrix24-tasks
-description: Use when working with Bitrix24 tasks and their CLI connections through mesilov/bitrix24-cli, including task search, task fields, participants, task chat, checklists, time entries, attachments, and change history. Подходит для запросов о задачах Битрикс24 через b24cli.
+description: Use when working with Bitrix24 tasks, employees, and CLI connections through mesilov/bitrix24-cli, including task search, lifecycle, results, fields, participants, chat, checklists, time entries, attachments, and status history. Подходит для запросов о задачах и сотрудниках Битрикс24 через b24cli.
 license: MIT
 ---
 
@@ -8,7 +8,9 @@ license: MIT
 
 Транспорт — [mesilov/bitrix24-cli](https://github.com/mesilov/bitrix24-cli).
 Все операции выполняются через публичные команды `b24cli`. Скилл описывает
-их параметры и результаты. Проверенная версия транспорта — **0.1.0**.
+их параметры и результаты. Карта для **0.2.0** сверена 14.10.2026 по `dev`
+(`1ed4422a8d7a33138134d6a8763594820c75c256`): 56 публичных команд.
+Источник справки и границы RC — в [контракте транспорта](references/transport.md).
 Значения полей, ID и сроки задаются пользователем либо уже настроенным
 профилем CLI; скилл не придумывает собственные defaults.
 Для выполнения нужен установленный `b24cli` и доступ к shell; для запросов
@@ -17,7 +19,8 @@ license: MIT
 ## Подключение и выбор команды
 
 1. Найди `b24cli` в PATH или используй известный путь к бинарю. Проверь
-   `b24cli --version`, `b24cli list --raw` и `b24cli help ИМЯ_КОМАНДЫ`.
+   `b24cli --version`, `b24cli --help`, `b24cli list --raw` и
+   `b24cli ИМЯ_КОМАНДЫ --help`. `--about` показывает сведения о сборке без подключения.
    Если доступен `doctor:problem-trajectory`, один раз за запуск проверь
    `--action status --json` и следуй [правилу weekly предложения](references/problem-trajectories.md).
    При analysisDue=false не отвлекай пользователя; при true предложи один пакетный разбор.
@@ -27,8 +30,10 @@ license: MIT
    Эти опции взаимоисключающие. Не рассчитывай на поиск dotenv в текущем каталоге.
 3. Выбери команду по [карте команд CLI](references/commands.md). Используй полное
    имя с двоеточиями, например `task:show`. Карта привязана к проверенной
-   версии 0.1.0: 30 команд задач и 5 команд подключений. Возможности другого
-   установленного бинаря уточняй его справкой.
+   версии 0.2.0: 43 команды задач, 4 пользователей, 5 подключений, 1 doctor
+   и 3 служебные команды. Возможности установленного бинаря уточняй его справкой.
+   Для статусов/результатов, локальных вложений, тегов, пользовательских полей
+   и интерпретации длительностей прочитай [рабочие сценарии](references/task-workflows.md).
 4. Выполняй команды с `--json`, сохраняй exit code и разбирай `data`, `meta`,
    `error`. Для планирования изменений задач доступен `--dry-run`; он может делать
    проверочные чтения. Удаление в неинтерактивном режиме требует `--force`.
@@ -53,7 +58,7 @@ b24cli --env-file "/absolute/path/to/.env.local" \
 Для запросов о дедлайнах и просроченных задачах прочитай
 [временные фильтры](references/deadline-windows.md). Сначала проверь наличие
 `--deadline-window`, `--overdue` и `--timezone` в справке установленного CLI:
-эти параметры добавляются после базовой версии 0.1.0. Skill передаёт
+эти параметры входят в карту 0.2.0. Skill передаёт
 мнемонику и известный timezone пользователя; интервалы рассчитывает CLI.
 
 Если проверка version/help подтверждает, что для запроса нужна собственная
