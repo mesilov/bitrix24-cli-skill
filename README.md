@@ -11,42 +11,6 @@
 запуске он проверяет weekly предложение пакетного разбора; без doctor предлагает
 обычный [issue в bitrix24-cli](https://github.com/mesilov/bitrix24-cli/issues).
 
-## Состав
-
-- [SKILL.md](skills/bitrix24-tasks/SKILL.md) — точка входа `bitrix24-tasks`.
-- [Транспорт](skills/bitrix24-tasks/references/transport.md) — credentials,
-  ввод/вывод, ошибки, dry-run и пагинация.
-- [Карта команд CLI](skills/bitrix24-tasks/references/commands.md) — все 56 публичных
-  команд 0.2.0 по `dev`: 43 задач, 4 пользователей, 5 подключений, 1 doctor
-  и 3 служебные, с их параметрами.
-- [Рабочие сценарии](skills/bitrix24-tasks/references/task-workflows.md) — статусы
-  и native результаты, локальные вложения, теги, custom поля, длительности статусов.
-- [Временные фильтры](skills/bitrix24-tasks/references/deadline-windows.md) —
-  перевод календарных дедлайнов и просрочки в public CLI (при наличии flags в help).
-- [Проблемные сценарии](skills/bitrix24-tasks/references/problem-trajectories.md) —
-  capability-gated doctor, локальные карточки, weekly разбор и явный feedback mock
-  из [#96](https://github.com/mesilov/bitrix24-cli/issues/96); используется при наличии
-  команд/actions в help установленного CLI.
-- [Проверка 0.2.0](docs/verification-0.2.0.md) — source SHA, фактическая справка
-  dev, RC-бинарь, примеры и границы проверки.
-- [Историческая проверка 0.1.0](docs/verification.md) — предыдущая стабильная сборка.
-- [Проверка doctor workflow](docs/problem-trajectories-verification.md) —
-  исходники CLI, package validation и network=none smoke публичных примеров.
-
-Бинарь устанавливается отдельно; в пакет скилла не включаются credentials
-или platform-specific executable. Карта сверена 14.10.2026 по
-[dev `1ed4422`](https://github.com/mesilov/bitrix24-cli/tree/1ed4422a8d7a33138134d6a8763594820c75c256)
-с `list`, root help/about и справкой всех публичных команд. Проверен также
-standalone macOS arm64 `0.2.0-rc-1`; в dev изменён расчёт длительностей статусов
-после этого RC. Стабильный 0.2.0 пока не опубликован; 0.1.0 не покрывает новую карту.
-
-Связь обновления: [issue скилла #6](https://github.com/mesilov/bitrix24-cli-skill/issues/6),
-[issue приложения #100](https://github.com/mesilov/bitrix24-cli/issues/100),
-OpenSpec `verify-cli-help-and-docs-0-2-0`
-([архив](https://github.com/mesilov/bitrix24-cli/tree/dev/openspec/changes/archive/2026-10-14-verify-cli-help-and-docs-0-2-0)).
-Повторная сверка финального релизного артефакта —
-[release issue #109](https://github.com/mesilov/bitrix24-cli/issues/109).
-
 ## Установка скилла
 
 Скопируй **весь каталог** `skills/bitrix24-tasks`, включая `references` и
