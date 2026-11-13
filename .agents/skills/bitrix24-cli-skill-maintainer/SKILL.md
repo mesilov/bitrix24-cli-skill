@@ -5,9 +5,9 @@ description: Use when maintaining the bitrix24-cli-skill repository, changing it
 
 # Maintain bitrix24-cli-skill
 
-Maintain the portable [bitrix24-tasks package](../../../skills/bitrix24-tasks/SKILL.md)
+Maintain the portable [bitrix24-cli package](../../../skills/bitrix24-cli/SKILL.md)
 and repository documentation. This maintainer skill stays in this repository;
-it is not part of the user-facing package copied from `skills/bitrix24-tasks`.
+it is not part of the user-facing package copied from `skills/bitrix24-cli`.
 
 ## Scope and delivery
 

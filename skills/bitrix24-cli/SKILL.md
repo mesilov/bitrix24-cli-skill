@@ -1,10 +1,10 @@
 ---
-name: bitrix24-tasks
+name: bitrix24-cli
 description: Use when working with Bitrix24 tasks, employees, and CLI connections through mesilov/bitrix24-cli, including task search, lifecycle, results, fields, participants, chat, checklists, time entries, attachments, and status history. Подходит для запросов о задачах и сотрудниках Битрикс24 через b24cli.
 license: MIT
 ---
 
-# Задачи Битрикс24 через b24cli
+# Bitrix24 CLI
 
 Транспорт — [mesilov/bitrix24-cli](https://github.com/mesilov/bitrix24-cli).
 Все операции выполняются через публичные команды `b24cli`. Скилл описывает
