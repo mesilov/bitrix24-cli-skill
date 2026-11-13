@@ -1,6 +1,6 @@
 # bitrix24-cli-skill
 
-Общий Agent Skill для работы с задачами Битрикс24 через
+Agent Skill `bitrix24-cli` для работы с задачами Битрикс24 через
 [mesilov/bitrix24-cli](https://github.com/mesilov/bitrix24-cli).
 Один пакет используется в Claude Code, Codex и OpenCode.
 
@@ -13,33 +13,38 @@
 
 ## Установка скилла
 
-Скопируй **весь каталог** `skills/bitrix24-tasks`, включая `references` и
+Скопируй **весь каталог** `skills/bitrix24-cli`, включая `references` и
 `agents`, в каталог навыков выбранного агента. Содержимое пакета одинаковое;
 `agents/openai.yaml` добавляет только метаданные интерфейса Codex.
 
 | Агент | Для пользователя | Для проекта | Вызов |
 | --- | --- | --- | --- |
-| Claude Code | `~/.claude/skills/bitrix24-tasks/` | `.claude/skills/bitrix24-tasks/` | `/bitrix24-tasks` или подходящий запрос |
-| Codex | `~/.agents/skills/bitrix24-tasks/` | `.agents/skills/bitrix24-tasks/` | `$bitrix24-tasks` или подходящий запрос |
-| OpenCode | `~/.config/opencode/skills/bitrix24-tasks/` | `.opencode/skills/bitrix24-tasks/` | Запрос на использование `bitrix24-tasks`, загружается через native `skill` tool |
+| Claude Code | `~/.claude/skills/bitrix24-cli/` | `.claude/skills/bitrix24-cli/` | `/bitrix24-cli` или подходящий запрос |
+| Codex | `~/.agents/skills/bitrix24-cli/` | `.agents/skills/bitrix24-cli/` | `$bitrix24-cli` или подходящий запрос |
+| OpenCode | `~/.config/opencode/skills/bitrix24-cli/` | `.opencode/skills/bitrix24-cli/` | Запрос на использование `bitrix24-cli`, загружается через native `skill` tool |
 
 Например, из корня этого репозитория на Linux/macOS:
 
 ```sh
 # Claude Code
 mkdir -p "$HOME/.claude/skills"
-cp -R skills/bitrix24-tasks "$HOME/.claude/skills/"
+cp -R skills/bitrix24-cli "$HOME/.claude/skills/"
 
 # Codex
 mkdir -p "$HOME/.agents/skills"
-cp -R skills/bitrix24-tasks "$HOME/.agents/skills/"
+cp -R skills/bitrix24-cli "$HOME/.agents/skills/"
 
 # OpenCode
 mkdir -p "$HOME/.config/opencode/skills"
-cp -R skills/bitrix24-tasks "$HOME/.config/opencode/skills/"
+cp -R skills/bitrix24-cli "$HOME/.config/opencode/skills/"
 ```
 
-Если скилл уже установлен, замени его каталог целиком. Копирование поверх
+При переходе с `bitrix24-tasks` установи `bitrix24-cli` и удали старый каталог
+скилла из той же области установки. Обнови явные вызовы в своих инструкциях
+и шаблонах запросов на `/bitrix24-cli` в Claude Code, `$bitrix24-cli` в Codex
+или `bitrix24-cli` в OpenCode.
+
+Если `bitrix24-cli` уже установлен, замени его каталог целиком. Копирование поверх
 старой папки оставляет удалённые из новой версии справочники; они не должны
 сохраняться в установленном пакете.
 В Windows скопируй тот же каталог в соответствующий user/project path.
@@ -54,7 +59,7 @@ cp -R skills/bitrix24-tasks "$HOME/.config/opencode/skills/"
 ## Транспорт и подключение
 
 Установи `b24cli` для своей платформы по
-[инструкции транспорта](skills/bitrix24-tasks/references/transport.md).
+[инструкции транспорта](skills/bitrix24-cli/references/transport.md).
 Проверь `b24cli --version`, `b24cli --about` и `b24cli list --raw`.
 
 Для credentials в файле `.env.local` укажи абсолютный путь:
@@ -77,7 +82,7 @@ standalone-бинаря. Секрет читает транспорт; вклю�
 описывает работу над этим репозиторием. Он требует содержательную запись
 в [CHANGELOG.md](CHANGELOG.md) со ссылкой на issue в каждом PR с изменениями
 и проверку diff перед открытием PR и merge. Этот скилл хранится отдельно
-от пользовательского пакета `skills/bitrix24-tasks`.
+от пользовательского пакета `skills/bitrix24-cli`.
 
 ## Лицензия
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bitrix24 CLI"
+  short_description: "Задачи Битрикс24 через транспорт b24cli"
+  default_prompt: "Используй $bitrix24-cli для работы с задачами Битрикс24 через b24cli."
