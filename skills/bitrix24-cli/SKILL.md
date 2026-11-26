@@ -1,6 +1,6 @@
 ---
 name: bitrix24-cli
-description: Use when working with Bitrix24 tasks, employees, and CLI connections through mesilov/bitrix24-cli, including task search, lifecycle, results, fields, participants, chat, checklists, time entries, attachments, and status history. Подходит для запросов о задачах и сотрудниках Битрикс24 через b24cli.
+description: Use when working with Bitrix24 tasks, employees, and CLI connections through mesilov/bitrix24-cli, including task search, lifecycle, results, fields, participants, chat, checklists, time entries, attachments, status history, and Knowledge Base 2.0 articles (search, read, create, update). Подходит для запросов о задачах, сотрудниках и статьях Базы знаний Битрикс24 через b24cli.
 license: MIT
 ---
 
@@ -34,6 +34,9 @@ license: MIT
    и 3 служебные команды. Возможности установленного бинаря уточняй его справкой.
    Для статусов/результатов, локальных вложений, тегов, пользовательских полей
    и интерпретации длительностей прочитай [рабочие сценарии](references/task-workflows.md).
+   Для статей Базы знаний 2.0 прочитай [справочник `kb:*`](references/knowledge-base.md):
+   namespace появился после 0.2.0, сначала проверь `b24cli list kb --raw`.
+   Изменение статьи заменяет её текст целиком: прочитай, измени локально, запиши полный текст.
 4. Выполняй команды с `--json`, сохраняй exit code и разбирай `data`, `meta`,
    `error`. Для планирования изменений задач доступен `--dry-run`; он может делать
    проверочные чтения. Удаление в неинтерактивном режиме требует `--force`.
