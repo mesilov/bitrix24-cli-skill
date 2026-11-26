@@ -1,6 +1,6 @@
 # bitrix24-cli-skill
 
-Agent Skill `bitrix24-cli` для работы с задачами Битрикс24 через
+Agent Skill `bitrix24-cli` для работы с задачами и статьями Базы знаний 2.0 Битрикс24 через
 [mesilov/bitrix24-cli](https://github.com/mesilov/bitrix24-cli).
 Один пакет используется в Claude Code, Codex и OpenCode.
 

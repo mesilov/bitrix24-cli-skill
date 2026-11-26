@@ -87,3 +87,18 @@ canonical values сверены с DeadlineWindowResolver и тестами CLI.
 проверенной версией, а новые возможности skill включаются по help установленного
 CLI. Проверка языка инструкций и mapping выполнена локально; выполнение skill
 внутри всех AI-клиентов отдельно не проверялось.
+
+## Knowledge Base 2.0 update 2026-11-26
+
+[Issue #16](https://github.com/mesilov/bitrix24-cli-skill/issues/16) добавляет
+references/knowledge-base.md для namespace `kb:*` из
+[CLI #234](https://github.com/mesilov/bitrix24-cli/issues/234). Шаблоны команд,
+опции, ограничения ввода и коды результата сверены с `list kb --raw` и
+`COMMAND --help` всех шести команд, собранных из ветки CLI
+`feature/234-knowledge-base-articles`, source SHA
+`1caf8cc375ada40bf3687eaa6018f3e0acb7213e` (PR CLI #235). Этот PR влит в `dev` CLI 26.11.2026, merge-коммит `1a42baa`; релиз с командами `kb:*` не опубликован.
+Бинарь из этой ветки показывает версию `0.1.0`, то есть это не релизная сборка.
+
+Команды проверялись на тестовом портале в рамках CLI #234. Сам скилл с этими
+командами внутри AI-клиентов не запускался. Этот документ не утверждает выпуск
+CLI 0.3.0: скилл включает `kb:*` по справке установленного бинаря.

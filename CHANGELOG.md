@@ -9,6 +9,17 @@
   в changelog в каждом PR с изменениями. Diff changelog проверяется перед
   открытием PR и непосредственно перед merge
   ([#8](https://github.com/mesilov/bitrix24-cli-skill/issues/8)).
+- Справочник [Базы знаний 2.0](skills/bitrix24-cli/references/knowledge-base.md)
+  для команд `kb:list`, `kb:article:list`, `kb:article:search`,
+  `kb:article:show`, `kb:article:add` и `kb:article:update`. Скилл включает их
+  только если установленный `b24cli` показывает namespace `kb`, и описывает
+  правку статьи как «прочитать → изменить локально → записать полный текст»:
+  обновление заменяет содержимое целиком, `--overwrite` передаётся только
+  с согласия пользователя. Описание скилла, метаданные Codex и README упоминают
+  Базу знаний. Справка сверена с веткой CLI
+  [#234](https://github.com/mesilov/bitrix24-cli/issues/234); команды не входят
+  в опубликованный CLI 0.2.0
+  ([#16](https://github.com/mesilov/bitrix24-cli-skill/issues/16)).
 
 ### Изменено
 
